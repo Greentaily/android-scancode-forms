@@ -86,17 +86,12 @@ public class FormsActivity extends AppCompatActivity {
     }
 
     private void retrieveData(String queryData, int fieldIndex) {
-        StringBuilder query = new StringBuilder("Q1")
-                .append(editTextForm.getText().toString())
-                .append("\u0001")
-                .append(editTextSerial.getText().toString())
-                .append("\u0002");
-        for (int i = 0; i < dataFields.size(); i++) {
-            String field = (i == fieldIndex ? queryData + '\t' : String.valueOf('\t'));
-            query.append(field);
-        }
-        query.append('\r');
-
+        String query = CodeParser.createQuery(
+                editTextSerial.getText().toString(),
+                editTextForm.getText().toString(),
+                queryData,
+                fieldIndex,
+                dataFields.size());
         new RetrieveDataAsyncTask(this, fieldIndex).execute(host, String.valueOf(port), query.toString());
     }
 
